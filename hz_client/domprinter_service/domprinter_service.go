@@ -40,7 +40,6 @@ func NewDOMPrinterServiceClient(hostUrl string, ops ...Option) (Client, error) {
 }
 
 func (s *DOMPrinterServiceClient) FetchPrintTask(context context.Context, req *domprinter.FetchPrintTaskReq, reqOpt ...config.RequestOption) (resp *domprinter.FetchPrintTaskResp, rawResponse *protocol.Response, err error) {
-	fmt.Println("wocao??")
 	httpResp := &domprinter.FetchPrintTaskResp{}
 	ret, err := s.client.r().
 		setContext(context).
@@ -58,14 +57,12 @@ func (s *DOMPrinterServiceClient) FetchPrintTask(context context.Context, req *d
 		setRequestOption(reqOpt...).
 		setResult(httpResp).
 		execute("GET", "/print-task")
-	fmt.Println("finish-before")
 	if err != nil {
 		return nil, nil, err
 	}
 
 	resp = httpResp
 	rawResponse = ret.rawResponse
-	println("input", resp, rawResponse)
 	return resp, rawResponse, nil
 }
 
@@ -113,21 +110,21 @@ func (s *DOMPrinterServiceClient) UpdatePrintTask(context context.Context, req *
 	return resp, rawResponse, nil
 }
 
-var DefaultClient, _ = NewDOMPrinterServiceClient("172.22.237.2:8881")
+var defaultClient, _ = NewDOMPrinterServiceClient("")
 
 func ConfigDefaultClient(ops ...Option) (err error) {
-	DefaultClient, err = NewDOMPrinterServiceClient("", ops...)
+	defaultClient, err = NewDOMPrinterServiceClient("", ops...)
 	return
 }
 
 func FetchPrintTask(context context.Context, req *domprinter.FetchPrintTaskReq, reqOpt ...config.RequestOption) (resp *domprinter.FetchPrintTaskResp, rawResponse *protocol.Response, err error) {
-	return DefaultClient.FetchPrintTask(context, req, reqOpt...)
+	return defaultClient.FetchPrintTask(context, req, reqOpt...)
 }
 
 func SubmitPrintTask(context context.Context, req *domprinter.SubmitPrintTaskReq, reqOpt ...config.RequestOption) (resp *domprinter.SubmitPrintTaskResp, rawResponse *protocol.Response, err error) {
-	return DefaultClient.SubmitPrintTask(context, req, reqOpt...)
+	return defaultClient.SubmitPrintTask(context, req, reqOpt...)
 }
 
 func UpdatePrintTask(context context.Context, req *domprinter.UpdatePrintTaskReq, reqOpt ...config.RequestOption) (resp *domprinter.UpdatePrintTaskResp, rawResponse *protocol.Response, err error) {
-	return DefaultClient.UpdatePrintTask(context, req, reqOpt...)
+	return defaultClient.UpdatePrintTask(context, req, reqOpt...)
 }
